@@ -1,0 +1,8 @@
+.booklist-controls {
+  width: 500px;
+  height: 280px;
+
+  margin-bottom: 20px;
+  border: 1px solid grey;
+  padding: 20px;
+}
