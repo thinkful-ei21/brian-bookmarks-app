@@ -1,23 +1,26 @@
 'use strict';
 $(document).ready(function() {
-  startTitle()
+  //startTitle()
   //startTitle(stuffItem.create())
-  deleteBookmark()
+  deleteBookmark();
+  handleNewSubmit();
   //handlebooklist()
 })
 
 
 ///test functions for rendering
 /////////
+function addItemTobooklist(itemName){
+  bookstore.push({name:itemName});
+}
 
 
 
-
-$(".listrender").html(`<form id="test-list">
-  <input class = 'testinput'></input>
-  <button class ='submit'>submit</button>
-
-</form>`)
+//(".listrender").html(`<form id="test-list">
+//   <input class = 'testinput'></input>
+//   <button class ='submit'>submit</button>
+//
+// </form>`)
 
 function deleteBookmark(){
 
@@ -28,18 +31,23 @@ function deleteBookmark(){
 
  }
 
- function startTitle(cb) {
-   $("#test-list").submit(function(event) {
+ function handleNewSubmit(event) {
+   $('#list').submit(function(event) {
      event.preventDefault();
-     //console.log("hello")
+     console.log("`handleNewSubmit` ran");
+     let newinput = $(".testinput").val();
+     console.log(newinput);
+     $(".testinput").val('');
+     addItemTobooklist(newinput);
+     renderBookmarklist();
+   });
+  }
 
-     let newinput = $(".testinput").val()
 
     // console.log("hi how")
      //cb(newinput)
-     $(".testinput").val()
-
-     // $(".listtwo").append(
+     //$(".testinput").val()
+   // $(".listtwo").append(
      //   `<li>
      //            <div class ="booklist-controls">
      //            <h3>${item.name}</h3>
@@ -51,10 +59,9 @@ function deleteBookmark(){
      //    </li>`
      // )
      //return newinput
-   })
- }
+
  const bookstore = [
-   {name: "more", }
+   {name:"more", }
  ];
 
 //passing bookstore in as paramater, no side effects
@@ -68,7 +75,16 @@ function generateBookmarkString(store){
 
  function generateitemTemplate(item, itemindex) {
    console.log("shopping list generated")
-   return  `<li>${item.name}</li>`
+   return  `<li class= 'js-Item-index-element'
+                data-item-index= '${itemindex}'>
+               <div class ="booklist-controls">
+               <h3>'${item.name}'</h3>
+               <h4>description<h4>
+               <h4>link<h4>
+               <button class= "view">view</button>
+               <button class= "remove">remove</button>
+               </div>
+         </li>`
 
  }
 
@@ -79,8 +95,9 @@ const bookmarksItemString = generateBookmarkString(bookstore);
 }
 
 function handlebooklist(){
-  renderBookmarklist()
-  generateitemTemplate()
+  renderBookmarklist();
+  generateitemTemplate();
+  handleNewSubmit();
 }
 
 $(handlebooklist());
