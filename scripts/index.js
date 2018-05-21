@@ -39,6 +39,7 @@ function deleteBookmark(){
      console.log(newinput);
      $(".testinput").val('');
      addItemTobooklist(newinput);
+     postBookmarks(newinput);
      renderBookmarklist();
    });
   }
@@ -79,14 +80,27 @@ function generateBookmarkString(store){
                 data-item-index= '${itemindex}'>
                <div class ="booklist-controls">
                <h3>'${item.name}'</h3>
-               <h4>description<h4>
-               <h4>link<h4>
+
+               <h4>'${item.description}'<h4>
+               <h4>'${item.link}'<h4>
                <button class= "view">view</button>
                <button class= "remove">remove</button>
                </div>
          </li>`
 
  }
+
+/////////API CALLS////////
+const BASE_URL = 'https://thinkful-list-api.herokuapp.com/brian/bookmarks'
+
+const postBookmarks = function(searchTerm, callback){
+  $.postJSON(BASE_URL,
+    { name:searchTerm,
+
+    })
+}
+
+
 
 function renderBookmarklist(){
 console.log("render booklist")
@@ -103,5 +117,3 @@ function handlebooklist(){
 $(handlebooklist());
 
 /////////////
-
-const BASE_URL = 'https://thinkful-list-api.herokuapp.com/brian/bookmarks'
