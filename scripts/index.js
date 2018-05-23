@@ -1,31 +1,19 @@
 'use strict';
-$(document).ready(function() {
-  //startTitle()
-  //startTitle(stuffItem.create())
-  deleteBookmark();
-  handleNewSubmit();
-  //handlebooklist()
-})
-
-
 ///test functions for rendering
 /////////
 function addItemTobooklist(itemName){
-  bookstore.push({name:itemName});
+  bookstore.push({title:itemName});
+  bookstore.push({url:itemurl});
 }
 
 
 
-//(".listrender").html(`<form id="test-list">
-//   <input class = 'testinput'></input>
-//   <button class ='submit'>submit</button>
-//
-// </form>`)
+
 
 function deleteBookmark(){
 
    $(".remove").on('click', function(){
-    $(".booklist-controls").remove().closest();
+    $(".js-Item-index-element").remove().closest();
    console.log("hi");
   });
 
@@ -35,34 +23,21 @@ function deleteBookmark(){
    $('#list').submit(function(event) {
      event.preventDefault();
      console.log("`handleNewSubmit` ran");
-     let newinput = $(".testinput").val();
-     console.log(newinput);
-     $(".testinput").val('');
-     addItemTobooklist(newinput);
-     postBookmarks(newinput);
+     let newtitle = $(".title-input").val();
+     let newurl = $('.link-input').val();
+     console.log(newtitle);
+     $(".link-input").val('');
+     $(".title-input").val('');
+     addItemTobooklist(newtitle);
+     postBookmark(newtitle);
      renderBookmarklist();
    });
   }
 
 
-    // console.log("hi how")
-     //cb(newinput)
-     //$(".testinput").val()
-   // $(".listtwo").append(
-     //   `<li>
-     //            <div class ="booklist-controls">
-     //            <h3>${item.name}</h3>
-     //           <h4>description<h4>
-     //           <h4>link<h4>
-     //           <button class= "view">view</button>
-     //           <button class= "remove">remove</button>
-     //           </div>
-     //    </li>`
-     // )
-     //return newinput
-
- const bookstore = [
-   {name:"more", }
+ let bookstore = [
+   {title:"more",
+    url: "https://www.google.com/"}
  ];
 
 //passing bookstore in as paramater, no side effects
@@ -79,10 +54,9 @@ function generateBookmarkString(store){
    return  `<li class= 'js-Item-index-element'
                 data-item-index= '${itemindex}'>
                <div class ="booklist-controls">
-               <h3>'${item.name}'</h3>
+               <h3>'${item.title}'</h3>
 
-               <h4>'${item.description}'<h4>
-               <h4>'${item.link}'<h4>
+               <h4>'${item.url}'<h4>
                <button class= "view">view</button>
                <button class= "remove">remove</button>
                </div>
@@ -93,11 +67,18 @@ function generateBookmarkString(store){
 /////////API CALLS////////
 const BASE_URL = 'https://thinkful-list-api.herokuapp.com/brian/bookmarks'
 
-const postBookmarks = function(searchTerm, callback){
-  $.postJSON(BASE_URL,
-    { name:searchTerm,
+function postBookmark(title,url,callback){
+  $.post(BASE_URL,
+    {
+      title,
+      url
+    },
+    callback
+  )
+}
 
-    })
+function getBookmarks(callback){
+  $.getJSON(BASE_URL,callback);
 }
 
 
@@ -107,13 +88,20 @@ console.log("render booklist")
 const bookmarksItemString = generateBookmarkString(bookstore);
   $('.listtwo').html(bookmarksItemString);
 }
+//////////////entry point////
 
-function handlebooklist(){
-  renderBookmarklist();
-  generateitemTemplate();
+function main(){
+  getBookmarks((results) => {
+    bookstore = results
+    renderBookmarklist();
+  });
+
+
+  handleNewSubmit();
+  deleteBookmark();
   handleNewSubmit();
 }
 
-$(handlebooklist());
+main();
 
 /////////////
