@@ -1,13 +1,14 @@
 'use strict';
 ///test functions for rendering
 /////////
-function addItemTobooklist(itemName,itemurl){
+function addItemTobooklist(itemName,itemurl,itemID){
   bookstore.push(
 
     {
       title:itemName,
       url:itemurl,
-      isExpanded:false
+      isExpanded:false,
+      id:itemID
     }
 
   );
@@ -36,8 +37,10 @@ function addItemTobooklist(itemName,itemurl){
 
 
  let bookstore = [
-   {title:"more",
+   {
+     title:"more",
     url: "https://www.google.com/",
+    id: '',
     isExpanded:false
    }
  ];
@@ -61,7 +64,7 @@ function generateBookmarkString(store){
                <h3>'${item.title}'</h3>
                <h3>${item.url}</h3>
 
-               <button class= "view">view</button>
+               <input type="checkbox" class= "view">view</button>
                <button class= "remove">remove</button>
                </div>
          </li>`
@@ -72,17 +75,26 @@ function generateBookmarkString(store){
    console.log("shopping list generated")
    return  `<li class= 'js-Item-index-expand'
                 data-item-index= '${itemindex}'>
-               <h1>stuff</h1>
-         </li>`
+
+               <h1>'${item.title}'</h1>
+               <h1>${item.url}</h1>
+
+               <input type="checkbox" class= "view">view</button>
+               <button class= "remove">remove</button>
+           </li>`
 
  }
 
- function bookview(){
-   $(".view").on('click', generateBookmarkView(bookstore => {
-     item.isExpanded = true
-     console.log("bookview");
-   }))
+ function setupChangeView(){
+   $(".listrender").on('change','.view', (event) => {
+    const btn = $(event.currentTarget);
+    const idx = btn.closest('li').data('item-index')
+    bookstore[idx].isExpanded = true;
+     console.log(idx);
+     renderBookmarklist()
+   });
  }
+//STORE.bookmarks[idx].isExpanded = false; then render()
 
  function generateBookmarkView(item, itemindex){
    if (item.isExpanded){
@@ -93,15 +105,26 @@ function generateBookmarkString(store){
  }
 
  function deleteBookmark(){
-    $(".listrender").on('click', function(){
-      $('.remove').on('click', function(){
+
+    $(".listrender").on('click','.remove', function(event){
         console.log('delete')
+
+     const btn = $(event.currentTarget);
+     let index = btn.closest('li').data('item-index');
+     const idx = bookstore[index].id;
+     const BASE_URLID = `https://thinkful-list-api.herokuapp.com/brian/bookmarks/${idx}`
+     //bookstore.splice(`${idx}`,1);
      $(".js-Item-index-condense").remove().closest();
+     $.ajax({
+       url: BASE_URLID,
+       type: 'delete'
+        })
+      });
 
-   });
- });
+      renderBookmarklist()
+ };
 
-  }
+  //}
 //JSON.stringify
 /////////API CALLS////////
 const BASE_URL = 'https://thinkful-list-api.herokuapp.com/brian/bookmarks'
@@ -113,6 +136,7 @@ function postBookmark(title,url,callback){
       data: JSON.stringify({
         title:title,
         url:url,
+
       }),
       contentType: 'application/json; charset=utf-8',
       dataType: "json",
@@ -144,7 +168,7 @@ function main(){
 
   handleNewSubmit();
   deleteBookmark();
-  bookview();
+  setupChangeView();
 }
 
 main();
