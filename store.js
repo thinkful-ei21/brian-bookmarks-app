@@ -17,17 +17,24 @@ const store = (function() {
     this.items = this.items.filter(item => item.id !== id);
   };
 
-
+  
 
 //////proper way to deal with expanded state in store?
 
 
 
-
+///will give undefined if not found 
   const findById = function(id) {
     return this.items.find(item => item.id === id);
   };
 
+  const findByIdandUpdate = function(id, item){
+    const targetItem = this.findById(id); 
+    if(!targetItem){
+      return;
+    }
+    Object.assign(targetItem, item);
+  };
 
 
   function filterByRating(val) {
@@ -44,6 +51,7 @@ const store = (function() {
     addtoStore,
     findById,
     findByIDandDelete, 
+    findByIdandUpdate,
     filterByRating
   };
   

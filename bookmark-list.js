@@ -196,9 +196,9 @@ const bookmarkList = (function() {
       const id = $('.js-expand-updatedbookmark-view').data('updateditem-id');
       console.log(id);
       api.updateBookmark(id, updateData, () => {
-        store.expanded = false;
-        store.findByIDandDelete(id);
-        store.addtoStore(updateData);
+        updateData.expanded = false;
+        store.findByIdandUpdate(id,updateData);
+        
         render();
       });
     });
