@@ -14,9 +14,9 @@ const bookmarkList = (function() {
 
   function generateBookmarkElement(item) {
     if(item.expanded === true){
-      console.log('Generate Expanded view');
+      console.log(`${item.id}`);
       return `
-    <li class="expand-bookmark-view js-expand-bookmark-view" data-item-id="${item.id}>
+    <li class="expand-bookmark-view js-expand-updatedbookmark-view" data-updateditem-id="${item.id}">
       <h2>${item.title}</h2>
       <p class="expanded-stars js-expanded-stars">${item.rating}</p>
       <p class="long-desc js-long-desc">${item.desc}</p>
@@ -29,14 +29,14 @@ const bookmarkList = (function() {
       <form id="js-new-update-bookmark">
 
         <label for="add-bookmark-title"></label>
-        <input class="add-bookmark-title js-add-bookmark-title" id="add-bookmark-title" name="title" type="text" placeholder="title">
+        <input class="add-bookmark-title js-add-updatedbookmark-title" id="add-bookmark-title" name="title" type="text" placeholder="title">
         <label for="add-bookmark-desc"></label>
-        <textarea class="add-bookmark-desc js-add-bookmark-desc" id="add-bookmark-desc" name="desc" type="text" placeholder="description for links" rows="2" cols="40"></textarea>
+        <textarea class="add-bookmark-desc js-add-updatedbookmark-desc" id="add-bookmark-desc" name="desc" type="text" placeholder="description for links" rows="2" cols="40"></textarea>
         
         <label for="add-bookmark-link"></label>
-        <input class="add-bookmark-link js-add-bookmark-link" id="add-bookmark-link" name="url" type="text"placeholder="http://please-put.com">
+        <input class="add-bookmark-link js-add-updatedbookmark-link" id="add-bookmark-link" name="url" type="text"placeholder="http://please-put.com">
         <div id="add-star-rating js-add-star-rating">
-          <div class="rate-radio-button js-rate-radio-buttons">
+          <div class="rate-radio-button js-rate-updatedradio-buttons">
             <Legend>STARS</Legend>
             <input type="radio" id="5-stars"
               name="rate" value="5">
@@ -180,18 +180,21 @@ const bookmarkList = (function() {
   }
   //////FINISH
   function handleUpdateClicked(){
-    $('#js-new-update-bookmark').on('submit',event =>{
+    $('.js-bookmark-list').on('click','.js-update-bookmark-button', event =>{
       event.preventDefault();
       console.log('update clicked');
-      const title = event.currentTarget.title.value;
-      const url = event.currentTarget.url.value;
-      const desc = event.currentTarget.desc.value;
-      const rate = event.currentTarget.rate.value;
-
-
+      const title = $('.js-add-updatedbookmark-title').val();
+      console.log(`${title}`);
+      const url = $('.js-add-updatedbookmark-link').val();
+      const desc = $('.js-add-updatedbookmark-desc').val();
+      const rate = $('.js-rate-updatedradio-buttons').val();
+      console.log(`${url}`);
+      console.log(`${desc}`);
+      console.log(`${rate}`);
 
       const updateData = ({title, url, desc, rate});   
-      const id = getItemIdFromElement(event.currentTarget);
+      const id = $('.js-expand-updatedbookmark-view').data('updateditem-id');
+      console.log(id);
       api.updateBookmark(id, updateData, () => {
         store.expanded = false;
         store.findByIDandDelete(id);
