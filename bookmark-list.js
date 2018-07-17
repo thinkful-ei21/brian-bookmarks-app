@@ -16,7 +16,7 @@ const bookmarkList = (function() {
     if(item.expanded === true){
       console.log('Generate Expanded view');
       return `
-    <li class="expand-bookmark-view js-expand-bookmark-view">
+    <li class="expand-bookmark-view js-expand-bookmark-view" data-item-id="${item.id}>
       <h2>${item.title}</h2>
       <p class="expanded-stars js-expanded-stars">${item.rating}</p>
       <p class="long-desc js-long-desc">${item.desc}</p>
@@ -25,9 +25,38 @@ const bookmarkList = (function() {
           <a class="bookmark-link js-bookmark-link" href="${item.url}" target="_blank">
           <button class="visit-site-button js-visit-site-button" type="submit">go to the site</button></a>
       </div>
-      <div id="js-delete-bookmark">
-        <button class="delete-bookmark-button js-delete-bookmark-button" type="submit">DELETE</button>
-      </div>
+      
+      <form id="js-new-update-bookmark">
+
+        <label for="add-bookmark-title"></label>
+        <input class="add-bookmark-title js-add-bookmark-title" id="add-bookmark-title" name="title" type="text" placeholder="title">
+        <label for="add-bookmark-desc"></label>
+        <textarea class="add-bookmark-desc js-add-bookmark-desc" id="add-bookmark-desc" name="desc" type="text" placeholder="description for links" rows="2" cols="40"></textarea>
+        
+        <label for="add-bookmark-link"></label>
+        <input class="add-bookmark-link js-add-bookmark-link" id="add-bookmark-link" name="url" type="text"placeholder="http://please-put.com">
+        <div id="add-star-rating js-add-star-rating">
+          <div class="rate-radio-button js-rate-radio-buttons">
+            <Legend>STARS</Legend>
+            <input type="radio" id="5-stars"
+              name="rate" value="5">
+            <label for="4-stars">5</label>
+            <input type="radio" id="4-stars"
+              name="rate" value="5">
+            <label for="4-stars">4</label>
+            <input type="radio" id="3-stars"
+              name="rate" value="3">
+            <label for="3-stars">3</label>
+            <input type="radio" id="2-stars"
+              name="rate" value="2">
+            <label for="2-stars">2</label>
+            <input type="radio" id="1-star"
+              name="rate" value="1">
+            <label for="1-star">1</label>
+          </div>
+        </div>
+        
+        <button class="js-delete-bookmark" >delete</button>
       <div id="js-update-bookmark">
         <button class="update-bookmark-button js-update-bookmark-button" type="submit">update</button>
       </div>
@@ -151,12 +180,15 @@ const bookmarkList = (function() {
   }
   //////FINISH
   function handleUpdateClicked(){
-    $('.js-bookmark-list').on('click', '.js-update-bookmark-button',event =>{
+    $('#js-new-update-bookmark').on('submit',event =>{
       event.preventDefault();
+      console.log('update clicked');
       const title = event.currentTarget.title.value;
       const url = event.currentTarget.url.value;
       const desc = event.currentTarget.desc.value;
       const rate = event.currentTarget.rate.value;
+
+
 
       const updateData = ({title, url, desc, rate});   
       const id = getItemIdFromElement(event.currentTarget);
@@ -229,6 +261,7 @@ const bookmarkList = (function() {
     handleDeleteBookmarkClicked();
     handleCreateBookmarkClicked();
     handleFilterByRatingClicked();
+    handleUpdateClicked();
   }
 
   return {
