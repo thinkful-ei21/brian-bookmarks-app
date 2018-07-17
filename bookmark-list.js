@@ -42,7 +42,7 @@ const bookmarkList = (function() {
               name="rate" value="5">
             <label for="4-stars">5</label>
             <input type="radio" id="4-stars"
-              name="rate" value="5">
+              name="rate" value="4">
             <label for="4-stars">4</label>
             <input type="radio" id="3-stars"
               name="rate" value="3">
@@ -187,18 +187,19 @@ const bookmarkList = (function() {
       console.log(`${title}`);
       const url = $('.js-add-updatedbookmark-link').val();
       const desc = $('.js-add-updatedbookmark-desc').val();
-      const rate = $('.js-rate-updatedradio-buttons').val();
+      const rate = $('input[name=rate]:checked').val();
       console.log(`${url}`);
       console.log(`${desc}`);
       console.log(`${rate}`);
 
-      const updateData = ({title, url, desc, rate});   
+      const updateData = ({title, url, desc, rating:rate});   
       const id = $('.js-expand-updatedbookmark-view').data('updateditem-id');
       console.log(id);
       api.updateBookmark(id, updateData, () => {
         store.expanded = false;
         store.findByIDandDelete(id);
         store.addtoStore(updateData);
+        render();
       });
     });
   
@@ -232,7 +233,7 @@ const bookmarkList = (function() {
       $('.js-bookmark-list').append(bookmarkForm);
     }
 
-    if(store.expaned) {
+    if(store.expanded) {
       const expandView = generateExpandedView();
       $('.js-bookmark-list').append(expandView);
     }
