@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <!-- <link rel="stylesheet" href="styles/reset.css">
+  <link rel="stylesheet" href="styles/normalize.css">
+  <link rel="stylesheet" href="styles/index.css"> -->
+  <title>My Bookmarks App</title>
+</head>
+<body>
+  <div class="container">
+    <header role="banner">
+      <h1>My Bookmarks</h1>
+      <form id="js-create-bookmark-form">
+        <button role="button" class="header-button js-header-button" type="submit">CREATE BOOKMARK</button>
+      </form>
+      <form id="js-filter-bookmark-form">
+        <select role="select" class="header-select js-header-select">
+          <option role="option">Filter by Rating</option>
+          <option role="option">5 stars</option>
+          <option role="option">4 stars</option>
+          <option role="option">3 stars</option>
+          <option role="option">2 stars</option>
+          <option role="option">1 star</option>
+        </select>
+      </form>
+  </header>
+    <main role="main" class="bookmark-panel js-bookmark-panel">
+      <ul class="bookmark-list js-bookmark-list">
+      </ul>
+    </main>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="api.js"></script> 
+  <script src="store.js"></script> 
+  <script src="bookmark-list.js"></script> 
+  <script src="index.js"></script>  
+</body>
+</html>
