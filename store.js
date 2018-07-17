@@ -28,6 +28,7 @@ const store = (function() {
     return this.items.find(item => item.id === id);
   };
 
+  ////instead of returning undefined it will return nothing
   const findByIdandUpdate = function(id, item){
     const targetItem = this.findById(id); 
     if(!targetItem){

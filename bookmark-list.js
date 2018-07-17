@@ -11,7 +11,7 @@ const bookmarkList = (function() {
     const items = bookmarkList.map((item) => generateBookmarkElement(item));
     return items.join('');
   }
-
+/////CSS NAMING CONVENTION EXPLAINED https://repl.it/@thinkful/jquery-shopping-list-walkthrough-10 
   function generateBookmarkElement(item) {
     if(item.expanded === true){
       console.log(`${item.id}`);
@@ -19,37 +19,50 @@ const bookmarkList = (function() {
     <li class="expand-bookmark-view js-expand-updatedbookmark-view" data-updateditem-id="${item.id}">
       <h2>${item.title}</h2>
       <p class="expanded-stars js-expanded-stars">${item.rating}</p>
+
       <p class="long-desc js-long-desc">${item.desc}</p>
+
       <a class="bookmark-link js-bookmark-link" href="${item.url}" target="_blank">${item.url}</a>
       <div>
           <a class="bookmark-link js-bookmark-link" href="${item.url}" target="_blank">
+
           <button class="visit-site-button js-visit-site-button" type="submit">go to the site</button></a>
       </div>
       
       <form id="js-new-update-bookmark">
 
         <label for="add-bookmark-title"></label>
+
         <input class="add-bookmark-title js-add-updatedbookmark-title" id="add-bookmark-title" name="title" type="text" placeholder="title">
+
         <label for="add-bookmark-desc"></label>
+
         <textarea class="add-bookmark-desc js-add-updatedbookmark-desc" id="add-bookmark-desc" name="desc" type="text" placeholder="description for links" rows="2" cols="40"></textarea>
         
         <label for="add-bookmark-link"></label>
         <input class="add-bookmark-link js-add-updatedbookmark-link" id="add-bookmark-link" name="url" type="text"placeholder="http://please-put.com">
-        <div id="add-star-rating js-add-star-rating">
+
+        <div id="js-add-star-rating">
+
           <div class="rate-radio-button js-rate-updatedradio-buttons">
             <Legend>STARS</Legend>
+
             <input type="radio" id="5-stars"
               name="rate" value="5">
-            <label for="4-stars">5</label>
+            <label for="5-stars">5</label>
+
             <input type="radio" id="4-stars"
               name="rate" value="4">
             <label for="4-stars">4</label>
+
             <input type="radio" id="3-stars"
               name="rate" value="3">
             <label for="3-stars">3</label>
+
             <input type="radio" id="2-stars"
               name="rate" value="2">
             <label for="2-stars">2</label>
+
             <input type="radio" id="1-star"
               name="rate" value="1">
             <label for="1-star">1</label>
@@ -67,10 +80,15 @@ const bookmarkList = (function() {
   
       return `
       <li class="bookmark-list-items js-bookmark-list-items" data-item-id="${item.id}">
+
       <h3 class="list-title js-list-title">${item.title}</h3>
+
       <a class="list-link js-list-link" href="${item.url}" target="_blank">${item.url}</a>
+
       <section class="star-rating js-star-rating">
+
         <p class="star-number js-star-number">${item.rating}</p>
+
       </section>
       <button class="js-delete-bookmark" >delete</button>
       <button class="js-expandbutton-bookmark">expand</button>
@@ -81,9 +99,7 @@ const bookmarkList = (function() {
 
   
 
-  // function generateExpandedView(item){
-    
-  //} 
+  
 
   /////standard form for creating bookmarks
   function generateCreateBookmarkView()  {
@@ -100,21 +116,27 @@ const bookmarkList = (function() {
         
         <label for="add-bookmark-link"></label>
         <input class="add-bookmark-link js-add-bookmark-link" id="add-bookmark-link" name="url" type="text"placeholder="http://please-put.com">
-        <div id="add-star-rating js-add-star-rating">
+        
+        <div id="js-add-star-rating">
           <div class="rate-radio-button js-rate-radio-buttons">
-            <Legend>STARS</Legend>
+            <Legend>Rate you bookmark from 1 to 5</Legend>
+
             <input type="radio" id="5-stars"
               name="rate" value="5">
-            <label for="4-stars">5</label>
+            <label for="5-stars">5</label>
+
             <input type="radio" id="4-stars"
               name="rate" value="5">
             <label for="4-stars">4</label>
+
             <input type="radio" id="3-stars"
               name="rate" value="3">
             <label for="3-stars">3</label>
+
             <input type="radio" id="2-stars"
               name="rate" value="2">
             <label for="2-stars">2</label>
+
             <input type="radio" id="1-star"
               name="rate" value="1">
             <label for="1-star">1</label>
@@ -133,6 +155,7 @@ const bookmarkList = (function() {
     $('#js-create-bookmark-form').on('submit', (function(event) {
       event.preventDefault();
       store.adding = true;
+      console.log('bookmark create click');
       render();
     }));
   }
@@ -146,9 +169,15 @@ const bookmarkList = (function() {
       const desc = event.currentTarget.desc.value;
       const rate = event.currentTarget.rate.value;
 
+      if(title === ''|| url === ''){
+        return alert('title and url needed');
+      }
       api.createBookmark(title, url, desc, rate, function(response) {
+        
         store.addtoStore(response);
         store.adding = false;
+        
+        
         render();
       });
     }));
@@ -178,7 +207,7 @@ const bookmarkList = (function() {
       });
     });
   }
-  //////FINISH
+  //////handle update has a lot of moving parts, thats why so many console.logs
   function handleUpdateClicked(){
     $('.js-bookmark-list').on('click','.js-update-bookmark-button', event =>{
       event.preventDefault();
@@ -217,7 +246,7 @@ const bookmarkList = (function() {
       render();
     });
   }
-
+//////____________end of handles______________________________
   function getItemIdFromElement(item) {
     return $(item)
       .closest('.js-bookmark-list-items')
@@ -229,11 +258,14 @@ const bookmarkList = (function() {
     $('.js-bookmark-list').empty();
    
     if(store.adding) {
+      console.log('adding to store index');
       const bookmarkForm = generateCreateBookmarkView();
       $('.js-bookmark-list').append(bookmarkForm);
     }
-
+    /////expanded is a concept that should appear in the store, but really fits into the the booklist
+    //not 
     if(store.expanded) {
+      console.log('expanded ran');
       const expandView = generateExpandedView();
       $('.js-bookmark-list').append(expandView);
     }
@@ -241,14 +273,9 @@ const bookmarkList = (function() {
     handleAddBookmarkClicked();
 
 
-
-
-
-
-
-
-
-    //get current items
+    ////get current items/index state of objects from the store
+    /////one function will be missing and it will relate to the expanded feature
+    
     let items = store.items;
     //console.log(items);
 
@@ -259,7 +286,7 @@ const bookmarkList = (function() {
     $('.js-bookmark-list').append(bookmarkString);
 
   }
-
+  ///bind event listeners just to hold all handles
   function bindEventListeners() {
     handleExpandViewClicked();
     handleDeleteBookmarkClicked();
