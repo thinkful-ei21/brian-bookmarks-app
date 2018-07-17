@@ -221,6 +221,9 @@ const bookmarkList = (function() {
       console.log(`${desc}`);
       console.log(`${rate}`);
 
+      if(title === ''|| url === ''){
+        return alert('title and url needed');
+      }
       const updateData = ({title, url, desc, rating:rate});   
       const id = $('.js-expand-updatedbookmark-view').data('updateditem-id');
       console.log(id);
